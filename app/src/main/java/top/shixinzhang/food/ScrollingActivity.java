@@ -41,31 +41,34 @@ public class ScrollingActivity extends AppCompatActivity {
         toolBarLayout.setTitle("买菜助手（美团）");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String packageName = getTargetAppPackageName();
-                if (Helper.isAccessibilitySettingsOn(ScrollingActivity.this)) {
-                    if (Helper.checkAppInstalled(ScrollingActivity.this, packageName)) {
-                        Helper.startApplication(ScrollingActivity.this, packageName);
-                        Toast.makeText(ScrollingActivity.this,
-                                "开始执行！", Toast.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(view, "美团买菜未安装，请先安装！", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-                } else {
-                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                    startActivity(intent);
-
-                    Toast.makeText(ScrollingActivity.this,
-                            "请先给予[买菜助手]无障碍权限，这样才能自动操作！", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+        fab.setOnClickListener(startClickListener);
+        findViewById(R.id.btn_start).setOnClickListener(startClickListener);
     }
+
+    View.OnClickListener startClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            String packageName = getTargetAppPackageName();
+            if (Helper.isAccessibilitySettingsOn(ScrollingActivity.this)) {
+                if (Helper.checkAppInstalled(ScrollingActivity.this, packageName)) {
+                    Helper.startApplication(ScrollingActivity.this, packageName);
+                    Toast.makeText(ScrollingActivity.this,
+                            "开始执行！", Toast.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(view, "美团买菜未安装，请先安装！", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            } else {
+                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
+
+                Toast.makeText(ScrollingActivity.this,
+                        "请先给予[买菜助手]无障碍权限，这样才能自动操作！", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    };
 
     String getTargetAppPackageName() {
         //todo 根据选择打开目标 app
@@ -88,7 +91,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Uri uri = Uri.parse("https://blog.csdn.net/u011240877");
+            Uri uri = Uri.parse("https://mp.weixin.qq.com/s/jxB3TjTKlRyz0Ti4pnXZcw");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
             return true;
@@ -96,7 +99,7 @@ public class ScrollingActivity extends AppCompatActivity {
         if (id == R.id.action_report) {
             new AlertDialog.Builder(ScrollingActivity.this)
                     .setTitle("功能反馈方式")
-                    .setMessage("即将复制作者公众号名称，打开微信搜索后可发消息反馈。你的每个反馈，都将帮助更多买到菜！")
+                    .setMessage("即将复制作者公众号名称，打开微信搜索后可发消息反馈。你的每个反馈，都将帮助更多人买到菜！")
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

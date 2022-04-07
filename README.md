@@ -1,5 +1,7 @@
 # 美团买菜助手
 
+![](app/release/intro.png)
+
 居家办公三周有余，买菜始终困扰着我，隔几天就要早起抢菜。
 
 最近网上看到一个叮咚助手，被作者的创意所折服：
@@ -12,6 +14,10 @@ https://github.com/Skykai521/DingDongHelper
 
 # 下载方式
 
+1. 点击这里下载: [https://github.com/shixinzhang/MeituanRetailHelper/blob/main/app/release/app-release.apk](https://github.com/shixinzhang/MeituanRetailHelper/blob/main/app/release/app-release.apk)
+2. 进入公众号后台回复：买菜助手
+
+![](app/release/qrcode.png)
 
 # 使用方式
 
@@ -20,4 +26,5 @@ https://github.com/Skykai521/DingDongHelper
 3. 回到助手，再次点击开始，会自动打开美团买菜 app、开始执行
 
 # 责任说明
-本软件仅供学习交流，勿作其他用途，如作他用所承受的法律责任一概与作者无关。
+
+本软件仅供学习交流，不保证一定成功，勿作其他用途，如作他用所承受的法律责任一概与作者无关。
