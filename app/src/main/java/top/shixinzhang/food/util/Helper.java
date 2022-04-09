@@ -20,6 +20,7 @@ import top.shixinzhang.food.service.GrabService;
 
 public class Helper {
     public static AccessibilityService sService;
+    public static boolean isDebugMode;
 
     public static AccessibilityNodeInfo getRootInActiveWindow() {
         if (sService == null) {
@@ -205,15 +206,17 @@ public class Helper {
         return node;
     }
 
-    public static void startApplication(Context context, String packageName) {
+    public static boolean startApplication(Context context, String packageName) {
         if (TextUtils.isEmpty(packageName)) {
-            return;
+            return false;
         }
         Intent launchIntentForPackage = context.getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntentForPackage != null) {
             launchIntentForPackage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(launchIntentForPackage);
+            return true;
         }
+        return false;
     }
 
     /**

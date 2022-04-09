@@ -9,9 +9,11 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import top.shixinzhang.food.ScrollingActivity;
 import top.shixinzhang.food.util.Helper;
 
 /**
@@ -49,6 +51,13 @@ public class GrabService extends AccessibilityService {
         CharSequence eventPackageName = event.getPackageName();
         if (eventPackageName == null) {
             return;
+        }
+
+
+        if (Helper.isDebugMode) {
+            String eventClassName = event.getClassName().toString();
+            String info = String.format(Locale.CHINA, "pkg: %s, claz: %s", eventPackageName.toString(), eventClassName);
+            Toast.makeText(this, info , Toast.LENGTH_SHORT).show();
         }
 
         IGrabHandler grabHandler = appHandlerMap.get(eventPackageName.toString());

@@ -5,6 +5,5 @@
     android:accessibilityFeedbackType="feedbackSpoken"
     android:canRetrieveWindowContent="true"
     android:canPerformGestures="true"
-    android:packageNames="com.android.packageinstaller,com.google.android.packageinstaller,com.yaya.zone,com.meituan.retail.v.android"
     android:accessibilityFlags="flagDefault|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
     android:notificationTimeout="100"/>

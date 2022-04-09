@@ -42,7 +42,9 @@ public class MeituanGrabHandler implements GrabService.IGrabHandler {
     public static final String TEXT_DELIVERY_TIME_SELECT_DIALOG = "选择送达时间";
     public static final String TEXT_FINE = "我知道了";
     public static final String TEXT_ENSURE_ADDRESS = "确认并支付";
+    public static final String TEXT_GIVE_UP = "放弃机会";
 
+    public static final String TEXT_PAY_NOW = "立即支付";
     public static final String TEXT_PAY = "极速支付";
 
     public static final int COUNT_CHECK_TEXT = 4;
@@ -127,21 +129,25 @@ public class MeituanGrabHandler implements GrabService.IGrabHandler {
     }
 
     private boolean tryClickTextWithInterval(String text, long interval) {
+        return tryClickTextWithInterval(text, interval, COUNT_CHECK_TEXT);
+    }
+
+    private boolean tryClickTextWithInterval(String text, long interval, long maxCount) {
 
         long now = System.currentTimeMillis();
         if (now - lastClickPayTime < CLICK_PAY_INTERVAL) {
             return false;
         }
         lastClickPayTime = now;
-        return tryClickText(text, interval);
+        return tryClickText(text, interval, interval);
     }
 
     private boolean tryClickText(String text) {
-        return tryClickText(text, 200);
+        return tryClickText(text, 200, COUNT_CHECK_TEXT);
     }
 
-    private boolean tryClickText(String text, long interval) {
-        for (int i = 0; i < COUNT_CHECK_TEXT; i++) {
+    private boolean tryClickText(String text, long interval, long maxCount) {
+        for (int i = 0; i < maxCount; i++) {
             boolean clicked = Helper.actionText(text);
             if (clicked) {
                 return true;
@@ -185,9 +191,18 @@ public class MeituanGrabHandler implements GrabService.IGrabHandler {
         }
 
         //3.下单
-        boolean clicked = tryClickTextWithInterval(TEXT_PAY, 100);
-        loge("clicked pay? " + clicked);
-        if (!clicked) {
+        clickPay(rootNode, service);
+    }
+
+    void clickPay(AccessibilityNodeInfo rootNode, AccessibilityService service) {
+        boolean clicked = tryClickTextWithInterval(TEXT_PAY_NOW, 100, 3);
+        if (clicked) {
+            return;
+        }
+
+        boolean clickedPay = tryClickTextWithInterval(TEXT_PAY, 100);
+        loge("clicked pay? " + clickedPay);
+        if (!clickedPay) {
             clickDialogIfExist(rootNode, service);
         }
     }
@@ -219,6 +234,10 @@ public class MeituanGrabHandler implements GrabService.IGrabHandler {
             checkChartAndOrder(rootNode, service);
         } else {
             loge("find ID_TAB_CHART false ");
+        }
+
+        if (Helper.hasText(rootNode, TEXT_GIVE_UP)) {
+            tryClickText(TEXT_GIVE_UP);
         }
     }
 
@@ -274,7 +293,7 @@ public class MeituanGrabHandler implements GrabService.IGrabHandler {
 
         updateState(GrabState.CHART_PAGE);
         //点击结算
-        boolean placeOrdered = tryClickText(TEXT_ORDER_BTN, 100);
+        boolean placeOrdered = tryClickText(TEXT_ORDER_BTN, 100, COUNT_CHECK_TEXT);
         Log.e(TAG, "placeOrdered: " + placeOrdered);
 
         if (!placeOrdered) {
